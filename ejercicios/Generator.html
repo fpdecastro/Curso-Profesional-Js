@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generator</title>
+</head>
+<body>
+    <a href="/ejercicios/">Go Back</a>
+    <h3>Abrí la consola</h3>
+    <script>
+
+        /*TEORIA GENEGADORES
+        Se identifican con el keyword function* name_generator(){}.
+        Los generadores se deben instanciar con una variable. Por ejemplo
+        const g = newGenerator()
+        Una vez llamado el Generador se podrá ejecutar la función con el keyword .next. Por ejemplo
+        g.next()
+        La función se ejecutara hasta que encuentre el primer yield.
+        Luego se podrá seguir ejecutando la función si volvemos a llamar a g.next()
+        */
+        function* newGenerator() {
+            console.log('Hola, como andas?')
+            yield;
+            console.log('Todo bien y vos?')
+        }
+        
+        
+        function* GeneratorId(){
+            let id = 1;
+            let reset;
+            while(true){
+                reset = yield id;
+                if(reset)
+                {
+                    id = 1;
+                }
+                else
+                {
+                    id += 1; 
+                    console.log(id)
+                }
+            }
+        };
+
+        function* Finobacci(){
+            let list_finobacci = [0,1];
+            while (true){
+                last_number = list_finobacci[list_finobacci.length-1];
+                reset = yield last_number;
+                if(reset){
+                    let list_finobacci = [0,1]
+                }else{
+                    old_number = list_finobacci[list_finobacci.length-2];
+                    new_number = list_finobacci[list_finobacci.length-1];
+                    list_finobacci.push( old_number + new_number)
+                }
+            }
+        }
+        function* Finobacci_segunda(){
+            // let list_finobacci = [0,1];
+            let old_number = 0;
+            let new_number = 1;
+            let sum = 0;
+            while (true){
+                reset = yield sum;
+                if(reset){
+                    let old_number = 0;
+                    let new_number = 1;
+                }else{
+                    sum = old_number + new_number;
+                    old_number = new_number;
+                    new_number = sum;
+                }
+            }
+        }
+    
+    </script>
+</body>
+</html>

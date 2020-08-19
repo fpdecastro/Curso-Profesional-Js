@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aborta un fetch</title>
+</head>
+<body>
+    <a href="/ejercicios/">Go back</a>
+    <h3>Abre la consola</h3>
+    <img id="huge-img" height="400" alt="Imagen Estrellas">
+
+    <button id="load">Load HUGE Image</button>
+    <button id="stop">Stop Fetching</button>
+
+    <script>const url = 'https://images.pexels.com/photos/974470/nature-stars-milky-way-galaxy-974470.jpeg?q=100';
+const img = document.getElementById('huge-img');
+const loadButton = document.getElementById('load');
+const stopButton = document.getElementById('stop');
+let controller;
+
+function starloading() {
+  /* Permite al boton no esta available*/
+  loadButton.disabled = true;
+  /* Le cambia el texto al boton*/
+
+  loadButton.innerText = 'Loading ...';
+  /* Vuelve a poner el boton available*/
+
+  stopButton.disabled = false;
+}
+
+function stoploading() {
+  /*The botton will be available*/
+  loadButton.disabled = false;
+  /* We change the text inside the button*/
+
+  loadButton.innerText = 'Load Huge Image';
+  /*We set the button back to disabled*/
+
+  stopButton.disabled = true;
+}
+
+loadButton.onclick = async function () {
+  starloading();
+  /*Instanciamos la clase AbortController*/
+
+  controller = new AbortController();
+
+  try {
+    /*Al fetch le pasaremos dos parámetros una url y un objeto*/
+    const response = await fetch(url, {
+      signal: controller.signal
+    });
+    /*Queremos la imagen pero de forma binaria*/
+
+    const blob = await response.blob();
+    /*El navegador me devuelve una URL donde esta la imagen*/
+
+    const imageUrl = URL.createObjectURL(blob);
+    img.src = imageUrl;
+  } catch (error) {
+    console.log(error.message);
+  }
+
+  stoploading();
+};
+
+stopButton.onclick = function () {
+  controller.abort();
+  stoploading();
+};</script>
+
+</body>
+</html>

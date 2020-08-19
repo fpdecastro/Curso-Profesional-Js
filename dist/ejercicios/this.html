@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explanation This</title>
+</head>
+<body>
+    <a href="/ejercicios.">Go back</a>
+    <h1><em>This</em></h1>
+    <h4>Se refiere a un objeto. Ese objeto es el que actualmente este ejecutando un pedazo de código</h4>
+    <script>//this en el scope global
+console.log(`this is: ${this}`); //En el contexto Global this is window
+//El scopre de un función cuando ponemos this sigue siendo window
+
+function whoIsThis() {
+  return this;
+}
+
+;
+console.log(`whoIsThis: ${whoIsThis()}`); //Utilizaremos el strict mode        
+
+function whoIsThisStrict() {
+  "use strict";
+
+  return this;
+}
+
+;
+console.log(`whoIsThisStrict: ${whoIsThisStrict()}`); //This de una función
+
+const person = {
+  nombre: 'Francisco',
+  saludar: function () {
+    console.log(`Hola que tal: ${this.nombre}`);
+  }
+};
+person.saludar(); //this cuando sacamos una función de un objeto
+
+/* lo que hacemos aca es nombrar a accion como una función y luego ejecutarla, esta no va a saber quien es this, por que esta fuera
+del objeto person*/
+
+const accion = person.saludar;
+accion();
+/* This en el contexto de una clase*/
+
+function Person(name) {
+  this.name = name;
+}
+/*Las funciones del prototype no pueden ser arrow functions, no leen el this.name si no*/
+
+
+Person.prototype.saludar = function () {
+  console.log(`Hola muy buenos días: ${this.name}`);
+};
+
+const francisco = new Person('Francisco');
+francisco.saludar();</script>
+</body>
+</html>

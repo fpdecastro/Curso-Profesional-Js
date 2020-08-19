@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aprendiendo Call Apply & Bind</title>
+</head>
+<body>
+    <a href="/ejercicios/">Go back</a>
+    <p><em>Aca vamos a analizar como funcionan <b>Call, Apply y Bind</b></em></p>
+
+    <ul>
+        <li><button class="buttons_funcionality">Aprende</button></li>
+        <li><button class="buttons_funcionality">Aprende más</button></li>
+        <li><button class="buttons_funcionality"> ¡Nunca pares de aprendes! </button></li>
+    </ul>
+    <script>
+        /* Utilizaremos el CALL*/
+        function saludar(){
+            console.log(`Hola como estas: ${this.name} ${this.surname}`)
+        }
+
+        const francisco = {
+            name: 'Francisco',
+            surname: 'de Castro'
+        }
+        /* Recibe quien queres que sea el this */
+        saludar.call(francisco)
+
+        function caminar(metros = 90, direccion = 'Oeste'){
+            console.log(`${this.name} ${this.surname} camina ${metros} en la dirección ${direccion}`)
+        }
+        /* Aca podemos ver que si la función requiere de dos parámetros, se puede utilizar call.
+        Primero se aclara cual es el this y luego los parámetros*/
+        caminar.call(francisco, 100, 'Sur')
+
+        /*Utilizaremos APPLY*/
+        caminar.apply(francisco, [ 100, 'Sur'])
+        var valores = [300,'Noroeste']
+        caminar.apply(francisco, valores)
+
+        /* Utilizaremos el BIND - Esta me devuelve una función nueva con la aclaración de cual es el This*/
+        const caminar1 = caminar.bind(francisco);
+        const caminar2 = caminar.bind(francisco, 1000, 'Norte');
+        caminar1(500, 'Sur');
+        caminar2();
+
+        var buttons = document.getElementsByClassName("buttons_funcionality")
+        console.log(buttons)
+        
+        Array.prototype.forEach.call( buttons, element => {
+            element.onclick = () => alert("Nunca para de aprender pendejoo")})
+    </script>
+</body>
+</html>

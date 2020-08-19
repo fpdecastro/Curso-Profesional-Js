@@ -1,0 +1,98 @@
+Proxies : Se dedica a interseptar funciones antes de ser llamadas y modificar la dependiendo las especificaciones
+del programa
+
+¿Cómo funciona Js?
+Java Script funciona sobre un motor de Js y enteder el motor hace que nuestros programas sean eficientes
+La herencia prototipal - en JavaScript no existen las clases
+
+Si tenemos dos funciones asíncronas las dos se van a llamar en el mismo momento pero no quiere decir que se resuelvan
+en simultaneo
+
+Argumento DEFER para Scripts
+Ejecuta el script al final de haber construido el DOM
+
+¿Que hace un Js Engine?
+
+(1) Recibe un código fuente
+(2) Parsea el código y produce un Abstract Syntax Tree (AST)
+(3) Se compila a bytecode y se ejecuta
+(4) Se optimiza a machine code y se reemplaza el código base
+bytecode: Es un lenguaje de menor nivel pero hace que el código se ejecute más rápido
+
+FLUJO DEL código
+
+Js Source Code --> parser --> Abstract Syntax Tree --> Interpreter --> bytecode <-- Deoptimized <-- Cuando este falla
+                                                            |             ↓                              ↑
+                                                            '--> Optimizing Compiler --> Optimized Code--'
+
+El Optimizing Compiler es donde se optimiza el código luego de pasar por un Profiling Data que viene desde el bytecode.
+El resustaldo del Optimizing Compiler es un Código Optimizado (Optimized Code)
+
+¿Que hace un parser?
+Tiene como entrada un código fuente en Js y lo lee. Este agarra el Source code y lo descompone en Tokens(Pedazos de código)
+El parse es el que detecta los Syntax Errors
+El parsing es el 15-20% del proceso de ejecución
+Por eso es necesario hacer BUNDLING Y CODE SPLITTING
+                  parser
+Código Fuente --> Tokens --> Abstract Syntax Tree
+
+PARSER V8 - Es el motor de Js
+
+Eager Parsing         Lazy Parsing
+
+* Encuentra errores | * Double de rápido
+de sintaxis         | que el eager parser 
+* Crea el AST       | * No crea el AST
+* Construye Scopes  | * Construye los Scopes
+                    |  parcialmente
+
+DEMO - TOKENS
+
+ABSTRACT SYNTAX TREE
+Es un grafo. Estructura en forma de árbol, que va a tener una raíz que va a ser nuestro source code
+y luego lo vamos a ir descomponiendo en partes, siguiendo los Tokens que produjo el parser.
+
+
+Machine Code vs Bytecode
+MC es código de bajo nivel, pero los procesadores necesitan este código para ser eficientes y rápidos. Este es el que corre en el 
+v8 de node y Chrome
+
+Existe un programa que se encuentra entre el bytecode y Optimizador que es el Profiling code. Su función es analizar el código y 
+optimizarlo en el caso de que se pueda
+
+
+EVENT LOOP
+Es lo que hace que JavaScript parezca multihilo, cuando en realidad. Solamente puede ejecutar una cosa a la vez.
+
+JavaScript se organiza usando dos estructura de datos STACK y MEMORY HEAP.
+
+MEMORY HEAP
+De forma organizada se guarda información de las variables, funciones y del scope.
+
+STACK lleva rastro de donde esta el programa
+si tenemos (1) la función MAIN (1.1) MAIN llama a renderlist y (1.1.1) renderlist llama a get movies se vería algo así
+
+|  getMovies    |
+|  renderlist   |
+|  Main         |
+|_______________|
+
+(1) El STACK comienza vacío
+(2) Se hace un push se mete una función a ejecutar
+Se pueden tantas funciones se llamen
+(3) Se hace un pop. Se empiezan a ejecutar las funciones y van saliendo del STACK
+Se hace pop se ejecuta el getMovies, luego otro pop el renderlist y por último el pop Main.
+
+
+Task queue
+para pasar al Stack se necesita del Script del Event loop. El event loop solo pasa las cosas al Stack
+cuando recién este vació.
+
+Cuando ejecutamos un programa tenemos formas de organizar y leyes que rigen el comportamiento de los objetos en JavaScript.
+Tenemos el STACK es aquel que nos determina que es lo próximo que se va a ejecutar. Las SCHEDULES TASKS son aquellas tareas que se van a ejecutar
+asincronicamente y cuando termina su tiempo van a QUEUE para luego ser ejecutadas una vez vacio el TASKS.
+
+¿Que pasa con las promesas?
+Las ejecuciones de PROMESAS no van al SCHEDULES TASKS si no que van a MICROTASKS QUEUE. El EVENT LOOP siempre va a dar prioridad a las MICROTASKS.
+Es decir se ejecuta todo lo que hay en el STACK luego se fijo en las MICROTASKS y las ejecuta hasta que se vacie y luego empieza a ejecutar las
+TASKS QUEUE.

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scope</title>
+</head>
+<body>
+    <a href="../ejercicios/">Go Back</a>
+    <p><em>Abre la consola</em></p>
+    <!-- Si agregamos jQuery, esta disponible en las variables globales -->
+    <script src="https://unpkg.com/jquery@3.3.1/dist/jquery.js"></script>
+    <script>
+        //Global Scope
+        var message = 'Hello, Platzinautas!'
+
+        //reinscribimos la variable de jQuery
+        function $ (message){
+            console.log('Say :' + message)
+            /*El hecho de que haya tomado message que le pusimos y no el message globales
+            por que esta funcionando el scope de funciones*/
+        }
+
+        //Function Scope
+        function printNumber (){
+            /*como es un var va cambiando su valor y esto se ejecuta mucha más rapido que los 100 milisegundos
+            por lo tanto al momento de imprimirse el valor de i es 100*/
+            for(var i = 0; i < 10 ;i++){
+                function EventuallyPrint (n) {
+                    setTimeout(function (){
+                        console.log(n)
+                    },100)
+                }
+                EventuallyPrint(i)
+            }
+            
+        }
+        printNumber();
+        
+        //Block Scope
+
+        function printNumber1 (){
+            /*como es un var va cambiando su valor y esto se ejecuta mucha más rapido que los 100 milisegundos
+            por lo tanto al momento de imprimirse el valor de i es 100*/
+            for(let i = 0; i < 10 ;i++){
+                setTimeout(function (){
+                    console.log(i)
+                },100)
+            }
+        }
+        printNumber1();
+
+        //Module Scope
+    </script>
+</body>
+</html>

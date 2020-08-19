@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proxy</title>
+</head>
+<body>
+    <h1>
+        <a href="/ejercicios/">Go back</a>
+    </h1>
+    <h2>Abre la consola</h2>
+    <script src="https://unpkg.com/fast-levenshtein@2.0.6/levenshtein.js"></script>
+
+    <script>/* EL OBJETO PROXY se utiliza para definir un comportamiento personalizado para
+        operaciones fundamentales */
+
+/*Objeto a cual le haremos las búsquedas*/
+const target = {
+  red: 'Rojo',
+  yellow: 'Amarillo',
+  green: 'Verde'
+};
+/*Será aquel que estudiará el comportamiento */
+
+const handler = {
+  get(target, prop) {
+    if (prop in target) {
+      return target[prop];
+    }
+
+    const suggestion = Object.keys(target).find(key => {
+      return Levenshtein.get(prop, key) <= 3;
+    });
+    /*Si tiene algo suggestion se ejecutará el código que esta dentro del if*/
+
+    if (suggestion) {
+      console.log(`Quiza quiso decir ${suggestion}`);
+    }
+  }
+
+};
+/*Instanciamos Proxy qu es una clase*/
+
+const p = new Proxy(target, handler);</script>
+</body>
+</html>

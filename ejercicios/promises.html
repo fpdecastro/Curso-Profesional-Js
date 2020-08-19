@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promesas</title>
+</head>
+<body>
+    <h1 style="text-align: center;">Promesas</h1>
+    <ul>
+        <li><button id="sequence">Get Top Movies in Sequence</button></li>
+        <li><button id="parallel">Get Top Movies in Parallel</button></li>
+        <li><button id="fastest">Get Fastest Top Movie</button></li>
+    </ul>
+  
+    <ul id="movies"></ul>
+    <script>
+        const apiKey = 'b89fc45c2067cbd33560270639722eae';
+        
+        async function getMovie(id){
+            const url = `https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}`;
+            const response = await fetch(url)
+            const data = await response.json()
+            return data
+        }
+        
+        async function getPopularMovies(){
+            const url = `https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=${apiKey}`
+            /* fetch nos devuleve una promesa */
+            const response = await fetch(url);
+            const data = await response.json();
+                return data.results;
+        }
+
+        async function getTopMoviesIds(n = 3) {
+            // return getPopularMovies().then(popularMovies
+            // => popularMovies.slice(0,n).map( movie => movie.id)
+            // );
+        
+            // Como es una promesa tenemos que esperar hasta que se resuelva por eso se le agregamos el keyword await
+            // Como la promesa puede tirarnos un error el correcto manejo es con un try and catch
+            // try{
+            //     const popularMovies = awaitgetPopularMovies()
+            // }
+            // catch (error){
+            //    console.log(error.message)
+            // }
+            // const popularMovies = await getPopularMovies();
+            // const ids = popularMovies.slice(0, n).map( movie => movie.id );
+            // return ids;
+        // }
+            const popularMovies = await getPopularMovies();
+            const ids = popularMovies.slice(0, n).map(movie => movie.id);
+            return ids;
+        }
+
+        async function getTopMoviesInSequence() {
+            const ids = await getTopMoviesIds();
+            const movies = [];
+            /*La iteración por cada elemento del array que obtenemos hace que se convierta en una sequencia*/
+            for(const id of ids){
+                const movie = await getMovie(id);
+                movies.push(movie)
+            }
+            return movies;
+        }
+
+        async function getTopMovieInParallel(){
+            const ids = await getTopMoviesIds();
+            const moviePromise = ids.map(id => getMovie(id))
+            /*Promise all tbm es una promesa que va a tratar de devolver
+            las promesas juntas de moviePromise*/
+            const movies = await Promise.all(moviePromise)
+            return movies
+        }
+
+        async function getFastestTopMovies(){
+            const ids = await getTopMoviesIds();
+            const moviePromise = ids.map(id => getMovie(id));
+            /*Promises.race(Promesas) devuelve la primer promesa que se resuelva de un conjunto de ellas*/
+            const movie = await Promise.race(moviePromise);
+            return movie
+        }
+        
+        function renderMovies(movies) {
+            const movieList = document.getElementById('movies');
+            /* Obtiene el elemnto del DOM con el id 'movies' y luego lo reemplaza por vacío*/
+            movieList.innerHTML = '';
+            /*movies entra como parámetro y es un array de 3 películas más populares*/
+            movies.forEach(movie => {
+                /*Se Crea un objeto li por cada elemento del array*/
+                const listItem = document.createElement('li');
+                /*Se escribe en listItem el html nuevo presentando las películas de movies*/
+                listItem.innerHTML = `
+                    <img src="https://image.tmdb.org/t/p/w342${movie.poster_path}" />
+                    <h5>${movie.title}</h5>
+                    <p>Released on <em>${movie.release_date}</em></p>
+                `;
+                /*Agrega un nuevo nodo al final de la lista de un elemento hijo de un elemento padre especificado
+                Es decir listItem es hijo del elemento con id = movies*/
+                movieList.appendChild(listItem);
+            });
+        }
+
+        document.getElementById('sequence').onclick = async function(){
+            const movies = await getTopMoviesInSequence();
+            renderMovies(movies);
+        }
+
+        document.getElementById('parallel').onclick = async function(){
+            const movies = await getTopMovieInParallel();
+            renderMovies(movies)
+        }
+
+        document.getElementById('fastest').onclick = async function(){
+            const movies = await getFastestTopMovies();
+            renderMovies([movies]);
+        }
+
+
+    </script>
+</body>
+</html>

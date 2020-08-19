@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Herencia Prototipal</title>
+</head>
+<body>
+    <a href="/e4741c1b8ff11436a616f321cb6e300f."></a>
+    <p><em>Ahora aprenderemos sobre <b>Herencia Protoripal</b></em></p>
+    
+    <script>function Hero(name) {
+  this.name = name;
+  this.edad = 8;
+}
+
+Hero.prototype.saludar = function () {
+  console.log(`Hola soy el mismisimo ${this.name}`);
+};
+
+const Batman = new Hero('Batman');
+Batman.saludar();
+/* Aun que creemos un objeto y le asignemos propiedades hay propiedades que vienen predefindidas por el hecho
+de ser un objeto en el __proto__*/
+
+console.log(`toString: `, Batman.toString());
+/* Existe un método el cual nos dice que si un objeto tiene o lo toma prestado a alguna propiedad
+Ese método se llama hasOwnProperty*/
+
+console.log(Batman.hasOwnProperty("__proto__"));</script>
+</body>
+</html>

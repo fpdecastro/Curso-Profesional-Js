@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Closures</title>
+</head>
+<body>
+    <a href="../ejercicios/">Go back</a>
+    <p><em>Abre la consola</em></p>
+    <script>
+        
+        //IIFE - Inmediately Invoked Function Expression
+        (function() { 
+            let color = 'green'
+            /*La función de abajo tiene alcance a lo que esta entre {}
+            Esto es un clousure*/
+            function printColor(){
+                console.log(color)
+            };
+            printColor();
+        })();
+
+        /*Vamos a construir un pinter de colores*/
+        function makeColorPrinter(color){
+            let colorMessage = `This is de ${color}`
+            return function(){
+                console.log(colorMessage)
+            }
+        }
+        /* Esto es un closure. Cuando yo ejecuto makeColorPrinter('green') Me devuelve una función la cual
+        no es necesario mandarle ningún parámetro. Pero imprime una variable que esta en su alcance que es la
+        de colorMessage*/
+        /*Esto de los clousures nos permitirá realizar variables privadas*/
+        let greenColorPrinter = makeColorPrinter('green');
+        console.log(greenColorPrinter())     
+        
+        //Variables privadas
+        
+        function MakeCounter (n){
+            let count = n;
+            return{
+                /*Es una función que retorna un objeto con tres propiedades que tienen una función*/
+                increase : function(){
+                    count += 1
+                },
+                decrease : function(){
+                    count -= 1
+                },
+                getCount : function(){
+                    return count
+                } 
+            }
+        }
+
+        let counter = MakeCounter(3);
+        /* Como vemos asi se puede crear una variable privada como es n
+        y se puede modificar y extraer a traves de las propiedades de un objeto (que son funciones)
+        Siempre counter va a variar los valores de count y se los va a acordar*/
+
+        console.log('El numero que vamos es: ' + counter.getCount())
+        counter.increase()
+        counter.increase()
+        counter.increase()
+        counter.increase()
+        counter.increase()
+        console.log('El numero que vamos es: ' + counter.getCount())
+        counter.decrease()
+        counter.decrease()
+        counter.decrease()
+        counter.decrease()
+        counter.decrease()
+        console.log('El numero que vamos es: ' + counter.getCount())      
+
+    </script>
+    
+</body>
+</html>

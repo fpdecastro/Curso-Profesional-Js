@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prototype</title>
+</head>
+<body>
+    <a href="/ejercicios.">Go Back</a>
+    <p><em>Abre la consola</em></p>
+    
+    <script>/*Muy ineficiente por cada uno tengo que crear un SuperHéroe*/
+const zelda = {
+  name: 'zelda'
+};
+
+zelda.saludar = function () {
+  console.log(`Hola soy ${this.name}`);
+};
+
+zelda.saludar();
+const Link = {
+  name: 'Link'
+};
+
+Link.saludar = function () {
+  console.log(`Hola soy ${this.name}`);
+};
+
+Link.saludar();
+/* Hagamos una función constructora*/
+
+function Hero(name) {
+  this.name = name;
+}
+
+Hero.prototype.saludar = function () {
+  console.log(`Hola me llamo ${this.name}`);
+};
+/* Creamos un objeto y lo instanciamos para dos Heroes*/
+
+
+const SuperMan = new Hero('Super Man');
+const HombreArana = new Hero('Peter Parker');
+SuperMan.saludar();
+HombreArana.saludar();
+/* Tercera forma que es crear una función con métodos*/
+
+function Heroes(name) {
+  const hero = {
+    name: name
+  };
+
+  hero.saludar = function () {
+    console.log(`Bienvenidos a ${this.name}`);
+  };
+
+  return hero;
+}
+
+;
+const batman = Heroes('Batman');
+batman.saludar();
+const linterna_verde = Heroes('Linterna Verde');
+linterna_verde.saludar();
+/*Aun vamos a tratar de ser más eficientes creando otro método aparte*/
+
+const HeroesMethods = {
+  saludar: function () {
+    console.log(`Me llamo ${this.name}`);
+  }
+};
+
+function Heroes1(name) {
+  const hero = {
+    name: name
+  };
+  hero.saludar = HeroesMethods.saludar;
+  return hero;
+}
+
+;
+const batichica = Heroes('Batichica');
+batichica.saludar();
+const Pinocho = Heroes('Pinocho');
+Pinocho.saludar();
+/* Ahora veremos que tambíen se puede utilizar un Objet.create
+el cual me permitirá hacer un nuevo objeto con todas las propiedas
+del anterior
+-------------*----------------*-----------------*--------
+Basicamente lo que hace es copiar el objeto*/
+
+function Heroes2(name) {
+  const hero = Object.create(HeroesMethods);
+  hero.name = name;
+  return hero;
+}
+
+const Roman = Heroes2('Roman');
+Roman.saludar();
+const Jeniffer = Heroes2('Jeniffer');
+Jeniffer.saludar();</script>
+</body>
+</html>

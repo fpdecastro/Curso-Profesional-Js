@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SET & GET</title>
+</head>
+<body>
+    <script>
+        const persona = {
+            nombre : 'Maria Jose',
+            apellido : 'Ponce',
+            /* Set y Get son funciones y son propiedades virtuales que se le puede
+            dar a un objeto*/
+            get nombrecompleto (){
+                return `${this.nombre} ${this.apellido}`
+            },
+            /* Con el set puedo cambiar las propiedades del objeto creado*/
+            set nombrecompleto(value){
+                const data = value.split(' ');
+                this.nombre = data[0] || '';
+                this.apellido = data[1] || '';
+            }
+        }
+        /*Imprimo las propiedades que tiene el objeto*/
+        console.log(persona.nombrecompleto);
+        /*Le cambio las propiedades al objeto*/
+        persona.nombrecompleto = 'Francisco Castro'
+        /* Imprimo el get */
+        console.log(persona.nombrecompleto);
+        console.log(persona.nombre)
+    </script>
+</body>
+</html>
